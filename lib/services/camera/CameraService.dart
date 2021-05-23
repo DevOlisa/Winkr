@@ -3,8 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:winkr/services/camera/camera_functions.dart';
 
-import 'Handlers.dart';
+import '../Handlers.dart';
 
 class CameraApp extends StatelessWidget {
   const CameraApp({Key key}) : super(key: key);
@@ -18,22 +19,6 @@ class TakePictureScreen extends StatefulWidget {
   const TakePictureScreen({Key key}) : super(key: key);
   @override
   _TakePictureScreenState createState() => _TakePictureScreenState();
-}
-
-IconData getCameraLensIcon(CameraLensDirection direction) {
-  switch (direction) {
-    case CameraLensDirection.back:
-      return Icons.camera_rear_rounded;
-      break;
-    case CameraLensDirection.front:
-      return Icons.camera_front_rounded;
-      break;
-    case CameraLensDirection.external:
-      return Icons.camera;
-      break;
-    default:
-      throw ArgumentError('Unknown lens direction');
-  }
 }
 
 class _TakePictureScreenState extends State<TakePictureScreen>
@@ -123,9 +108,6 @@ class _TakePictureScreenState extends State<TakePictureScreen>
     final cameras = context.read<List<CameraDescription>>();
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        title: const Text('Camera example'),
-      ),
       body: Column(
         children: <Widget>[
           Expanded(
@@ -303,11 +285,6 @@ class _TakePictureScreenState extends State<TakePictureScreen>
                   _controller != null ? onExposureModeButtonPressed : null,
             ),
             IconButton(
-              icon: Icon(Icons.filter_center_focus),
-              color: Colors.blue,
-              onPressed: _controller != null ? onFocusModeButtonPressed : null,
-            ),
-            IconButton(
               icon: Icon(enableAudio ? Icons.volume_up : Icons.volume_mute),
               color: Colors.blue,
               onPressed: _controller != null ? onAudioModeButtonPressed : null,
@@ -325,7 +302,7 @@ class _TakePictureScreenState extends State<TakePictureScreen>
         ),
         _flashModeControlRowWidget(),
         _exposureModeControlRowWidget(),
-        _focusModeControlRowWidget(),
+        // _focusModeControlRowWidget(),
       ],
     );
   }
@@ -458,58 +435,58 @@ class _TakePictureScreenState extends State<TakePictureScreen>
     );
   }
 
-  Widget _focusModeControlRowWidget() {
-    final ButtonStyle styleAuto = TextButton.styleFrom(
-      primary: _controller?.value?.focusMode == FocusMode.auto
-          ? Colors.orange
-          : Colors.blue,
-    );
-    final ButtonStyle styleLocked = TextButton.styleFrom(
-      primary: _controller?.value?.focusMode == FocusMode.locked
-          ? Colors.orange
-          : Colors.blue,
-    );
+  // Widget _focusModeControlRowWidget() {
+  //   final ButtonStyle styleAuto = TextButton.styleFrom(
+  //     primary: _controller?.value?.focusMode == FocusMode.auto
+  //         ? Colors.orange
+  //         : Colors.blue,
+  //   );
+  //   final ButtonStyle styleLocked = TextButton.styleFrom(
+  //     primary: _controller?.value?.focusMode == FocusMode.locked
+  //         ? Colors.orange
+  //         : Colors.blue,
+  //   );
 
-    return SizeTransition(
-      sizeFactor: _focusModeControlRowAnimation,
-      child: ClipRect(
-        child: Container(
-          color: Colors.grey.shade50,
-          child: Column(
-            children: [
-              Center(
-                child: Text("Focus Mode"),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  TextButton(
-                    child: Text('AUTO'),
-                    style: styleAuto,
-                    onPressed: _controller != null
-                        ? () => onSetFocusModeButtonPressed(FocusMode.auto)
-                        : null,
-                    onLongPress: () {
-                      if (_controller != null) _controller.setFocusPoint(null);
-                      showInSnackBar('Resetting focus point');
-                    },
-                  ),
-                  TextButton(
-                    child: Text('LOCKED'),
-                    style: styleLocked,
-                    onPressed: _controller != null
-                        ? () => onSetFocusModeButtonPressed(FocusMode.locked)
-                        : null,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  //   return SizeTransition(
+  //     sizeFactor: _focusModeControlRowAnimation,
+  //     child: ClipRect(
+  //       child: Container(
+  //         color: Colors.grey.shade50,
+  //         child: Column(
+  //           children: [
+  //             Center(
+  //               child: Text("Focus Mode"),
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //               mainAxisSize: MainAxisSize.max,
+  //               children: [
+  //                 TextButton(
+  //                   child: Text('AUTO'),
+  //                   style: styleAuto,
+  //                   onPressed: _controller != null
+  //                       ? () => onSetFocusModeButtonPressed(FocusMode.auto)
+  //                       : null,
+  //                   onLongPress: () {
+  //                     if (_controller != null) _controller.setFocusPoint(null);
+  //                     showInSnackBar('Resetting focus point');
+  //                   },
+  //                 ),
+  //                 TextButton(
+  //                   child: Text('FIXED'),
+  //                   style: styleLocked,
+  //                   onPressed: _controller != null
+  //                       ? () => onSetFocusModeButtonPressed(FocusMode.locked)
+  //                       : null,
+  //                 ),
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _captureControlRowWidget() {
     final CameraController cameraController = _controller;

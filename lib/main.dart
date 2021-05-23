@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:winkr/pages/base.dart';
 import 'package:winkr/pages/homepage.dart';
 import 'package:camera/camera.dart';
 import 'package:winkr/services/Handlers.dart';
@@ -11,15 +13,15 @@ Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
     final cameras = await availableCameras();
-    runApp(Provider(create: (context) => cameras, child: Winkr()));
+    runApp(Provider(create: (context) => cameras, child: Base()));
   } on CameraException catch (e) {
     logError(e.code, e.description);
+    runApp(Winkr());
   }
 }
 
 class Winkr extends StatelessWidget {
   // This widget is the root of your application.
-
   const Winkr({
     Key key,
   }) : super(key: key);

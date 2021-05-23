@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:winkr/model/message.dart';
 import 'package:winkr/model/users.dart';
+
+import 'package:provider/provider.dart';
+import 'package:camera/camera.dart';
 import 'package:winkr/pages/settings_page.dart';
-import 'package:winkr/services/CameraService.dart';
+import 'package:winkr/services/camera/camera_app.dart';
 import 'package:winkr/widgets/ImageBubble.dart';
 import 'package:winkr/widgets/MessageBubble.dart';
 
@@ -155,7 +158,10 @@ class _ChatPageState extends State<ChatPage> {
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return CameraApp();
+                          final _cameras =
+                              context.read<List<CameraDescription>>();
+
+                          return CameraApp(cameras: _cameras);
                         }));
                       },
                     )),

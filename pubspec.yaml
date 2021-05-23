@@ -26,6 +26,7 @@ dependencies:
   sqflite:
   path_provider:
   firebase_core: ^1.1.0
+  firebase_auth: ^1.1.4
   firebase_database: "^6.0.0"
   flutter:
     sdk: flutter
